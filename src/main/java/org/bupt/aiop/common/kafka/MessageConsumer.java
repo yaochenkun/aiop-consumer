@@ -1,17 +1,18 @@
 package org.bupt.aiop.common.kafka;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
-import org.bupt.aiop.notice.KafkaProperties;
+import org.bupt.aiop.notice.KafkaConsts;
 
 import java.util.Collections;
 import java.util.Properties;
 
 /**
- * 消费者类
+ * Kafka消费者
  */
 public class MessageConsumer extends Thread{
 
@@ -32,10 +33,10 @@ public class MessageConsumer extends Thread{
         this.handler = handler;
 
         configs = new Properties();
-        configs.put("bootstrap.servers", KafkaProperties.BROKER_LIST);
+        configs.put("bootstrap.servers", KafkaConsts.BROKER_ADDRESS_LIST);
         configs.put("group.id", this.groupId);
-        configs.put("key.deserializer", KafkaProperties.INTEGER_DESERIALIZER);
-        configs.put("value.deserializer", KafkaProperties.STRING_DESERIALIZER);
+        configs.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
+        configs.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         consumer = new KafkaConsumer<>(configs);
         consumer.subscribe(Collections.singletonList(this.topic));
@@ -55,7 +56,7 @@ public class MessageConsumer extends Thread{
                     } else {
                         // 处理消息
                         System.out.println("consumer[thread = "+ Thread.currentThread().getName() + ", topic = " + this.topic + ", groupId = " + this.groupId + "] is handling msg[offset = " + record.offset() + ", msgNumber = " + record.key() + ", msgContent = " + record.value() + ", partition = " + record.partition() + "]");
-                        handler.onMessage(record);
+                        handler.onMessage(JSON.parseObject(record.value()));
                     }
                 }
             }
