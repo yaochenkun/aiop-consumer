@@ -1,7 +1,6 @@
-package org.bupt.aiop.notice.handler.email;
+package org.bupt.aiop.handler.email;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bupt.aiop.common.kafka.AbstractMsgHandler;
 import org.bupt.aiop.common.util.EmailSender;
 

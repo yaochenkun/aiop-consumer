@@ -1,8 +1,7 @@
-package org.bupt.aiop.notice.handler.sms;
+package org.bupt.aiop.handler.sms;
 
 import com.alibaba.fastjson.JSONObject;
 import org.bupt.aiop.common.kafka.AbstractMsgHandler;
-import org.bupt.aiop.common.util.EmailSender;
 import org.bupt.aiop.common.util.SmsSender;
 
 /**

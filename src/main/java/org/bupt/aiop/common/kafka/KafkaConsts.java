@@ -1,7 +1,7 @@
-package org.bupt.aiop.notice;
+package org.bupt.aiop.common.kafka;
 
 /**
- * Kafka配置
+ * Kafka配置常量类
  */
 public class KafkaConsts {
 

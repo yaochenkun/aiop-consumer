@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.bupt.aiop.notice.KafkaConsts;
 
 import java.util.Map;
 import java.util.Properties;

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.bupt.aiop</groupId>
-    <artifactId>aiop-notice</artifactId>
+    <artifactId>aiop-consumer</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -70,7 +70,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.bupt.aiop.notice.ConsumerLauncher</mainClass>
+                                    <mainClass>org.bupt.aiop.ConsumersLaucher</mainClass>
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">

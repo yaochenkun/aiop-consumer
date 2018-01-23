@@ -1,8 +1,7 @@
 package org.bupt.aiop;
 
-import com.alibaba.fastjson.JSON;
 import org.bupt.aiop.common.kafka.MessageProducer;
-import org.bupt.aiop.notice.KafkaConsts;
+import org.bupt.aiop.common.kafka.KafkaConsts;
 
 import javax.mail.*;
 import java.util.ArrayList;
