@@ -31,5 +31,5 @@ public class KafkaConsts {
     public static final Integer THREADNUM_SEND_SMS_TO_SINGLE = 3;
 
     // Kafka环境地址配置
-    public static final String BROKER_ADDRESS_LIST = "10.109.246.68:9092";
+    public static final String BROKER_ADDRESS_LIST = "10.109.246.35:9092";
 }

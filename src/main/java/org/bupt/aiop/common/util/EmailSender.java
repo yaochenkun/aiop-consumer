@@ -3,6 +3,7 @@ package org.bupt.aiop.common.util;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,13 +32,14 @@ public class EmailSender {
 
 	/**
 	 * 发送邮件到单个邮箱
+	 * @param fromName 发件人昵称
 	 * @param to 收件人邮箱地址
 	 * @param subject 邮件标题
 	 * @param content 邮件内容
 	 * @param footer 邮件落款
 	 * @throws MessagingException
 	 */
-	public static void sendToSingle(String to, String subject, String content, String footer) throws MessagingException{
+	public static void sendToSingle(String fromName, String to, String subject, String content, String footer) throws MessagingException, UnsupportedEncodingException {
 
 		// 使用环境属性和授权信息，创建邮件会话
 		Session mailSession = Session.getInstance(props, authenticator);
@@ -45,11 +47,84 @@ public class EmailSender {
 		// 创建邮件消息
 		MimeMessage message = new MimeMessage(mailSession);
 
-		// 设置发件人
+		// 设置发件人（昵称）
+		message.setFrom(new InternetAddress(javax.mail.internet.MimeUtility.encodeText(fromName) + " <"+username+">"));
+
+		// 设置收件人
+		message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		// 设置邮件标题
+		message.setSubject(subject);
+
+		// 设置邮件的内容体
+		message.setContent("<span>" + content + "</span><br><br><br><strong>" + footer + "</strong>", "text/html;charset=UTF-8");
+
+		// 发送邮件
+		Transport.send(message);
+	}
+
+	/**
+	 * 发送邮件到单个邮箱
+	 * @param to 收件人邮箱地址
+	 * @param subject 邮件标题
+	 * @param content 邮件内容
+	 * @param footer 邮件落款
+	 * @throws MessagingException
+	 */
+	public static void sendToSingle(String to, String subject, String content, String footer) throws MessagingException, UnsupportedEncodingException {
+
+		// 使用环境属性和授权信息，创建邮件会话
+		Session mailSession = Session.getInstance(props, authenticator);
+
+		// 创建邮件消息
+		MimeMessage message = new MimeMessage(mailSession);
+
+		// 设置发件人（昵称）
 		message.setFrom(new InternetAddress(username));
 
 		// 设置收件人
 		message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		// 设置邮件标题
+		message.setSubject(subject);
+
+		// 设置邮件的内容体
+		message.setContent("<span>" + content + "</span><br><br><br><strong>" + footer + "</strong>", "text/html;charset=UTF-8");
+
+		// 发送邮件
+		Transport.send(message);
+	}
+
+	/**
+	 * 抄送邮件到多个邮箱
+	 * @param fromName 发件人昵称
+	 * @param to 收件人邮箱地址
+	 * @param multiTo 抄送收件人邮箱地址组
+	 * @param subject 邮件标题
+	 * @param content 邮件内容
+	 * @param footer 邮件落款
+	 * @throws MessagingException
+	 */
+	public static void sendToMultiByCopy(String fromName, String to, List<String> multiTo, String subject, String content, String footer) throws MessagingException, UnsupportedEncodingException {
+
+		// 使用环境属性和授权信息，创建邮件会话
+		Session mailSession = Session.getInstance(props, authenticator);
+
+		// 创建邮件消息
+		MimeMessage message = new MimeMessage(mailSession);
+
+		// 设置发件人（昵称）
+		message.setFrom(new InternetAddress(javax.mail.internet.MimeUtility.encodeText(fromName) + " <"+username+">"));
+
+		// 设置收件人
+		message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		// 设置抄送的所有收件人
+		Address[] addresses = new Address[multiTo.size()];
+		for (int i = 0; i < multiTo.size(); i++) {
+			addresses[i] = new InternetAddress(multiTo.get(i));
+		}
+		message.setRecipients(Message.RecipientType.CC, addresses);
 
 		// 设置邮件标题
 		message.setSubject(subject);
@@ -70,7 +145,7 @@ public class EmailSender {
 	 * @param footer 邮件落款
 	 * @throws MessagingException
 	 */
-	public static void sendToMultiByCopy(String to, List<String> multiTo, String subject, String content, String footer) throws MessagingException{
+	public static void sendToMultiByCopy(String to, List<String> multiTo, String subject, String content, String footer) throws MessagingException, UnsupportedEncodingException {
 
 		// 使用环境属性和授权信息，创建邮件会话
 		Session mailSession = Session.getInstance(props, authenticator);
@@ -78,7 +153,7 @@ public class EmailSender {
 		// 创建邮件消息
 		MimeMessage message = new MimeMessage(mailSession);
 
-		// 设置发件人
+		// 设置发件人（昵称）
 		message.setFrom(new InternetAddress(username));
 
 		// 设置收件人
@@ -103,6 +178,7 @@ public class EmailSender {
 
 	/**
 	 * 暗送邮件到多个邮箱
+	 * @param fromName 发件人昵称
 	 * @param to 收件人邮箱地址
 	 * @param multiTo 暗送收件人邮箱地址组
 	 * @param subject 邮件标题
@@ -110,7 +186,7 @@ public class EmailSender {
 	 * @param footer 邮件落款
 	 * @throws MessagingException
 	 */
-	public static void sendToMultiBySecret(String to, List<String> multiTo, String subject, String content, String footer) throws MessagingException{
+	public static void sendToMultiBySecret(String fromName, String to, List<String> multiTo, String subject, String content, String footer) throws MessagingException, UnsupportedEncodingException {
 
 		// 使用环境属性和授权信息，创建邮件会话
 		Session mailSession = Session.getInstance(props, authenticator);
@@ -118,7 +194,47 @@ public class EmailSender {
 		// 创建邮件消息
 		MimeMessage message = new MimeMessage(mailSession);
 
-		// 设置发件人
+		// 设置发件人（昵称）
+		message.setFrom(new InternetAddress(javax.mail.internet.MimeUtility.encodeText(fromName) + " <"+username+">"));
+
+		// 设置收件人
+		message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		// 设置抄送的所有收件人
+		Address[] addresses = new Address[multiTo.size()];
+		for (int i = 0; i < multiTo.size(); i++) {
+			addresses[i] = new InternetAddress(multiTo.get(i));
+		}
+		message.setRecipients(Message.RecipientType.BCC, addresses);
+
+		// 设置邮件标题
+		message.setSubject(subject);
+
+		// 设置邮件的内容体
+		message.setContent("<span>" + content + "</span><br><br><br><strong>" + footer + "</strong>", "text/html;charset=UTF-8");
+
+		// 发送邮件
+		Transport.send(message);
+	}
+
+	/**
+	 * 暗送邮件到多个邮箱
+	 * @param to 收件人邮箱地址
+	 * @param multiTo 暗送收件人邮箱地址组
+	 * @param subject 邮件标题
+	 * @param content 邮件内容
+	 * @param footer 邮件落款
+	 * @throws MessagingException
+	 */
+	public static void sendToMultiBySecret(String to, List<String> multiTo, String subject, String content, String footer) throws MessagingException, UnsupportedEncodingException {
+
+		// 使用环境属性和授权信息，创建邮件会话
+		Session mailSession = Session.getInstance(props, authenticator);
+
+		// 创建邮件消息
+		MimeMessage message = new MimeMessage(mailSession);
+
+		// 设置发件人（昵称）
 		message.setFrom(new InternetAddress(username));
 
 		// 设置收件人

@@ -12,7 +12,8 @@ public class SendEmailToSingleHandler implements AbstractMsgHandler {
 	@Override
 	public void onMessage(JSONObject params) {
 		try {
-			EmailSender.sendToSingle((String) params.get("to"),
+			EmailSender.sendToSingle((String) params.get("fromName"),
+					(String) params.get("to"),
 					(String) params.get("subject"),
 					(String) params.get("content"),
 					(String) params.get("footer"));

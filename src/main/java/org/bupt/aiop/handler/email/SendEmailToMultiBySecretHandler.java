@@ -14,7 +14,8 @@ public class SendEmailToMultiBySecretHandler implements AbstractMsgHandler {
 	@Override
 	public void onMessage(JSONObject params) {
 		try {
-			EmailSender.sendToMultiBySecret((String) params.get("to"),
+			EmailSender.sendToMultiBySecret((String) params.get("fromName"),
+					(String) params.get("to"),
 					(List<String>) params.get("multiTo"),
 					(String) params.get("subject"),
 					(String) params.get("content"),
